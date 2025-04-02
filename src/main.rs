@@ -1,45 +1,51 @@
+use crate::cards::CardName;
+use crate::cards::CardName::{DarkHole, PotOfGreed};
+
+mod cards;
 fn main() {
-    let player1 = Player {
-        name: "Alice".to_string(),
-        deck: vec![Card {
-            name: String::from("Pot of Greed"),
-            effect: Effect::DRAW2,
-        }],
-    };
-    let player2 = Player {
-        name: "Bob".to_string(),
-        deck: vec![Card {
-            name: String::from("Pot of Greed"),
-            effect: Effect::DRAW2,
-        }],
-    };
+    let player1 = Player::new(
+        String::from("Alice"),
+        vec![PotOfGreed, PotOfGreed, PotOfGreed, DarkHole],
+    );
+    let player2 = Player::new(String::from("Bob"), vec![PotOfGreed, DarkHole]);
     let core = Core::new([player1, player2]);
     println!("Initialized {:#?}", core)
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 struct Player {
     name: String,
-    deck: Vec<Card>,
+    deck: Vec<CardName>,
+    hand: Vec<CardName>,
+}
+impl Player {
+    fn new(name: String, deck: Vec<CardName>) -> Self {
+        let (hand, deck_after_draw) = deck.split_at(1);
+        Self {
+            name,
+            deck: deck_after_draw.to_vec(),
+            hand: hand.to_vec(),
+        }
+    }
 }
 
-#[derive(Debug)]
-struct Card {
-    name: String,
-    effect: Effect,
-}
-
-#[derive(Debug)]
-enum Effect {
-    DRAW2,
-}
-
-#[derive(Debug)]
-struct Core {
+#[derive(Clone, Debug)]
+struct State {
+    turn_player: usize,
     players: [Player; 2],
+}
+
+#[derive(Clone, Debug)]
+struct Core {
+    state: State,
 }
 impl Core {
     pub fn new(players: [Player; 2]) -> Self {
-        Core { players }
+        Core {
+            state: State {
+                players,
+                turn_player: 0,
+            },
+        }
     }
 }
