@@ -3,9 +3,9 @@ use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 #[derive(Clone, Debug)]
-struct Card {
-    display_name: String,
-    effect: Box<fn(State) -> State>,
+pub struct Card {
+    name: CardName,
+    pub effect: Box<fn(State) -> State>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -21,7 +21,7 @@ fn pot_of_greed(state: State) -> State {
 fn draw_cards(state: State, amount: usize) -> State {
     let mut players = state.players.clone();
     let (hand, deck_after_draw) = players[state.turn_player].deck.split_at(amount);
-    players[state.turn_player].hand = hand.to_vec();
+    players[state.turn_player].hand.append(&mut hand.to_vec());
     players[state.turn_player].deck = deck_after_draw.to_vec();
 
     State {
@@ -32,11 +32,11 @@ fn draw_cards(state: State, amount: usize) -> State {
 
 // lazily initializes the CARDS database at runtime
 lazy_static! {
-    static ref CARDS: HashMap<CardName, Card> = {
+    pub static ref CARDS: HashMap<CardName, Card> = {
         HashMap::from([(
             CardName::PotOfGreed,
             Card {
-                display_name: String::from("Pot of Greed"),
+                name: CardName::PotOfGreed,
                 effect: Box::new(pot_of_greed),
             },
         )])

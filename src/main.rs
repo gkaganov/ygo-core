@@ -1,28 +1,25 @@
-use crate::cards::CardName;
 use crate::cards::CardName::{DarkHole, PotOfGreed};
+use crate::cards::{CardName, CARDS};
 
 mod cards;
 fn main() {
-    let player1 = Player::new(
-        String::from("Alice"),
-        vec![PotOfGreed, PotOfGreed, PotOfGreed, DarkHole],
-    );
-    let player2 = Player::new(String::from("Bob"), vec![PotOfGreed, DarkHole]);
+    let player1 = Player::new(vec![PotOfGreed, PotOfGreed, PotOfGreed, DarkHole]);
+    let player2 = Player::new(vec![PotOfGreed, DarkHole]);
     let core = Core::new([player1, player2]);
-    println!("Initialized {:#?}", core)
+    println!("Initialized {:#?}", core);
+    let core_after_pot_of_greed = core.activate_card(0);
+    println!("Activated Pot of Greed {:#?}", core_after_pot_of_greed);
 }
 
 #[derive(Clone, Debug)]
 struct Player {
-    name: String,
-    deck: Vec<CardName>,
     hand: Vec<CardName>,
+    deck: Vec<CardName>,
 }
 impl Player {
-    fn new(name: String, deck: Vec<CardName>) -> Self {
+    fn new(deck: Vec<CardName>) -> Self {
         let (hand, deck_after_draw) = deck.split_at(1);
         Self {
-            name,
             deck: deck_after_draw.to_vec(),
             hand: hand.to_vec(),
         }
@@ -47,5 +44,19 @@ impl Core {
                 turn_player: 0,
             },
         }
+    }
+
+    pub fn activate_card(&self, position_in_hand: usize) -> Core {
+        let card_name = self
+            .state
+            .players
+            .get(self.state.turn_player)
+            .unwrap()
+            .hand
+            .get(position_in_hand)
+            .unwrap();
+        let card = CARDS.get(card_name).unwrap();
+        let state = (card.effect)(self.state.clone());
+        Core { state }
     }
 }
