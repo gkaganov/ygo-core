@@ -18,6 +18,10 @@ fn pot_of_greed(state: State) -> State {
     draw_cards(state, 2)
 }
 
+fn dark_hole(state: State) -> State {
+    state
+}
+
 fn draw_cards(state: State, amount: usize) -> State {
     let mut players = state.players.clone();
     let (hand, deck_after_draw) = players[state.turn_player].deck.split_at(amount);
@@ -33,12 +37,16 @@ fn draw_cards(state: State, amount: usize) -> State {
 // lazily initializes the CARDS database at runtime
 lazy_static! {
     pub static ref CARDS: HashMap<CardName, Card> = {
-        HashMap::from([(
-            CardName::PotOfGreed,
+        let cards = [
             Card {
                 name: CardName::PotOfGreed,
                 effect: Box::new(pot_of_greed),
             },
-        )])
+            Card {
+                name: CardName::DarkHole,
+                effect: Box::new(dark_hole),
+            },
+        ];
+        HashMap::from(cards.map(|card| (card.name.clone(), card)))
     };
 }
