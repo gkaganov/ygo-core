@@ -1,6 +1,6 @@
 use crate::State;
-use lazy_static::lazy_static;
 use std::collections::HashMap;
+use std::sync::LazyLock;
 
 #[derive(Clone, Debug)]
 pub struct Card {
@@ -34,19 +34,16 @@ fn draw_cards(state: State, amount: usize) -> State {
     }
 }
 
-// lazily initializes the CARDS database at runtime
-lazy_static! {
-    pub static ref CARDS: HashMap<CardName, Card> = {
-        let cards = [
-            Card {
-                name: CardName::PotOfGreed,
-                effect: Box::new(pot_of_greed),
-            },
-            Card {
-                name: CardName::DarkHole,
-                effect: Box::new(dark_hole),
-            },
-        ];
-        HashMap::from(cards.map(|card| (card.name.clone(), card)))
-    };
-}
+pub static CARDS: LazyLock<HashMap<CardName, Card>> = LazyLock::new(|| {
+    let cards = [
+        Card {
+            name: CardName::PotOfGreed,
+            effect: Box::new(pot_of_greed),
+        },
+        Card {
+            name: CardName::DarkHole,
+            effect: Box::new(dark_hole),
+        },
+    ];
+    HashMap::from(cards.map(|card| (card.name.clone(), card)))
+});
