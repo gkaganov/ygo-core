@@ -1,4 +1,4 @@
-use crate::ygo_core::private::card_text_logic::{dark_hole, pot_of_greed};
+use crate::ygo_core::private::state::State;
 use crate::ygo_core::private::types::Card;
 use std::collections::HashMap;
 use std::sync::LazyLock;
@@ -22,3 +22,11 @@ pub static CARDS: LazyLock<HashMap<CardName, Card>> = LazyLock::new(|| {
     ];
     HashMap::from(cards.map(|card| (card.name.clone(), card)))
 });
+
+fn pot_of_greed(state: State) -> State {
+    state.draw_cards(2)
+}
+
+fn dark_hole(state: State) -> State {
+    state
+}

@@ -1,4 +1,5 @@
 pub mod card_db;
-pub mod core;
+pub mod game;
+pub mod types;
 
 mod private;
