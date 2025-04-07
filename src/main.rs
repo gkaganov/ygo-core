@@ -27,8 +27,11 @@ fn main() {
     println!("Initialized: {:#?}", game);
 
     let legal_actions = game.legal_actions();
-    println!("Legal Actions: {:#?}", legal_actions);
+    println!("Legal actions: {:#?}", legal_actions);
 
-    let game_after_action = game.take_action(legal_actions.get(0).unwrap());
-    println!("Game after Action: {:#?}", game_after_action);
+    let my_action = legal_actions.get(0).unwrap();
+    println!("My action: {:#?}", legal_actions);
+
+    let game_after_action = game.take_action(my_action);
+    println!("Game after action: {:#?}", game_after_action);
 }
