@@ -1,11 +1,12 @@
-use crate::ygo_core::private::state::State;
+use crate::ygo_core::state::State;
 use std::collections::HashMap;
 use std::sync::LazyLock;
 
 #[derive(Clone, Debug)]
 pub struct Card {
     pub name: CardName,
-    pub effect: Box<fn(State) -> State>,
+    // source_player_index: usize, state: State
+    pub effect: Box<fn(usize, State) -> State>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -28,10 +29,10 @@ pub static CARDS: LazyLock<HashMap<CardName, Card>> = LazyLock::new(|| {
     HashMap::from(cards.map(|card| (card.name.clone(), card)))
 });
 
-fn pot_of_greed(state: State) -> State {
-    state.draw_cards(2)
+fn pot_of_greed(source_player_index: usize, state: State) -> State {
+    state.draw_cards(source_player_index, 2)
 }
 
-fn dark_hole(state: State) -> State {
+fn dark_hole(source_player_index: usize, state: State) -> State {
     state
 }

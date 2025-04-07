@@ -1,5 +1,4 @@
-use crate::ygo_core::private::state::State;
-use crate::ygo_core::private::types::{Player, PlayerAction};
+use crate::ygo_core::state::{Player, PlayerAction, State};
 use crate::ygo_core::types::Deck;
 
 pub static INITIAL_HAND_SIZE: usize = 1;
@@ -22,12 +21,15 @@ impl Game {
     }
 
     pub fn take_action(&self, choice: &PlayerAction) -> Result<Game, String> {
+        let source_player_index = self.state.prio_player_index;
         if !self.state.legal_actions().contains(choice) {
             Err(String::from("action not valid"))
         } else {
             Ok(match choice {
-                PlayerAction::ActivateCardInHand(index) => Game {
-                    state: self.state.activate_card_in_hand(*index),
+                PlayerAction::ActivateCardInHand(card_index) => Game {
+                    state: self
+                        .state
+                        .activate_card_in_hand(source_player_index, *card_index),
                 },
                 PlayerAction::ActivateCardInMainMonsterZone(_) => self.clone(),
                 PlayerAction::ActivateCardInExtraMonsterZone(_) => self.clone(),
