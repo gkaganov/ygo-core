@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "ygo"
+name = "ygo-core"
 version = "0.1.0"
