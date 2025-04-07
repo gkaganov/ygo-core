@@ -1,5 +1,5 @@
+use crate::ygo_core::card_db::Card;
 use crate::ygo_core::game::{MAX_DECK_SIZE, MIN_DECK_SIZE};
-use crate::ygo_core::private::types::Card;
 
 #[derive(Debug, Clone)]
 pub struct Deck(Vec<Card>);

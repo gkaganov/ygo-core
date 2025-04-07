@@ -1,13 +1,6 @@
-use crate::ygo_core::card_db::CardName;
+use crate::ygo_core::card_db::Card;
 use crate::ygo_core::game::INITIAL_HAND_SIZE;
-use crate::ygo_core::private::state::State;
 use crate::ygo_core::types::Deck;
-
-#[derive(Clone, Debug)]
-pub struct Card {
-    pub name: CardName,
-    pub effect: Box<fn(State) -> State>,
-}
 
 #[derive(Clone, Debug)]
 pub struct Player {

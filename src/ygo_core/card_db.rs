@@ -1,7 +1,12 @@
 use crate::ygo_core::private::state::State;
-use crate::ygo_core::private::types::Card;
 use std::collections::HashMap;
 use std::sync::LazyLock;
+
+#[derive(Clone, Debug)]
+pub struct Card {
+    pub name: CardName,
+    pub effect: Box<fn(State) -> State>,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum CardName {

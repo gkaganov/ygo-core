@@ -1,5 +1,6 @@
-use crate::ygo_core::private::types::{Card, Player, PlayerAction};
+use crate::ygo_core::card_db::Card;
 use crate::ygo_core::private::types::PlayerAction::ActivateCardInHand;
+use crate::ygo_core::private::types::{Player, PlayerAction};
 use crate::ygo_core::types::Deck;
 
 #[derive(Clone, Debug)]
