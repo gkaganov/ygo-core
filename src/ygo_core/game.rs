@@ -1,9 +1,28 @@
+use crate::ygo_core::card_db::Card;
 use crate::ygo_core::state::{Player, PlayerAction, State};
-use crate::ygo_core::types::Deck;
 
 pub static INITIAL_HAND_SIZE: usize = 1;
 pub static MIN_DECK_SIZE: usize = 1;
 pub static MAX_DECK_SIZE: usize = 60;
+
+#[derive(Debug, Clone)]
+pub struct Deck(Vec<Card>);
+impl Deck {
+    pub fn new(cards: Vec<Card>) -> Result<Self, String> {
+        let len = cards.len();
+        if len < MIN_DECK_SIZE || len > MAX_DECK_SIZE {
+            return Err(format!(
+                "Deck must contain between {} and {} cards. Got: {}",
+                MIN_DECK_SIZE, MAX_DECK_SIZE, len
+            ));
+        }
+        Ok(Deck(cards))
+    }
+
+    pub fn cards(&self) -> &[Card] {
+        &self.0
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct Game {

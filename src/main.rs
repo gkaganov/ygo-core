@@ -1,6 +1,5 @@
 use crate::ygo_core::card_db::CardName;
-use crate::ygo_core::game::Game;
-use crate::ygo_core::types::Deck;
+use crate::ygo_core::game::{Deck, Game};
 use ygo_core::card_db::CARDS;
 
 mod ygo_core;

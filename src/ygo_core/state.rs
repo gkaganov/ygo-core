@@ -1,7 +1,6 @@
 use crate::ygo_core::card_db::Card;
-use crate::ygo_core::game::INITIAL_HAND_SIZE;
+use crate::ygo_core::game::{Deck, INITIAL_HAND_SIZE};
 use crate::ygo_core::state::PlayerAction::ActivateCardInHand;
-use crate::ygo_core::types::Deck;
 
 #[derive(Clone, Debug)]
 pub struct Player {
