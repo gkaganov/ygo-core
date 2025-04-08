@@ -1,5 +1,6 @@
 use crate::ygo_core::card_db::Card;
 use crate::ygo_core::game::{Deck, INITIAL_HAND_SIZE};
+use crate::ygo_core::state::GamePhase::DrawPhase;
 use crate::ygo_core::state::PlayerAction::ActivateCardInHand;
 
 #[derive(Clone, Debug)]
@@ -27,11 +28,30 @@ pub enum PlayerAction {
     ActivateCardInGraveyard(usize),
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum GamePhase {
+    DrawPhase,
+    StandbyPhase,
+    MainPhase1,
+    BattlePhase(BattlePhaseStep),
+    MainPhase2,
+    EndPhase,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum BattlePhaseStep {
+    StartStep,
+    BattleStep,
+    DamageStep,
+    EndStep,
+}
+
 #[derive(Clone, Debug)]
 pub struct State {
     pub players: [Player; 2],
     pub turn_player_index: usize,
     pub prio_player_index: usize,
+    pub current_phase: GamePhase,
 }
 impl State {
     pub fn new(players: [Player; 2]) -> Self {
@@ -39,6 +59,7 @@ impl State {
             players,
             turn_player_index: 0,
             prio_player_index: 0,
+            current_phase: DrawPhase,
         }
     }
 
@@ -74,8 +95,7 @@ impl State {
 
         State {
             players: new_players,
-            turn_player_index: self.turn_player_index,
-            prio_player_index: self.prio_player_index,
+            ..self.clone()
         }
     }
 
