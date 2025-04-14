@@ -1,4 +1,4 @@
-use crate::ygo_core::card_db::Card;
+use crate::ygo_core::card_db::CardTemplate;
 use crate::ygo_core::state::{Player, PlayerAction, State};
 
 pub static INITIAL_HAND_SIZE: usize = 1;
@@ -6,9 +6,9 @@ pub static MIN_DECK_SIZE: usize = 1;
 pub static MAX_DECK_SIZE: usize = 60;
 
 #[derive(Debug, Clone)]
-pub struct Deck(Vec<Card>);
+pub struct Deck(Vec<CardTemplate>);
 impl Deck {
-    pub fn new(cards: Vec<Card>) -> Result<Self, String> {
+    pub fn new(cards: Vec<CardTemplate>) -> Result<Self, String> {
         let len = cards.len();
         if len < MIN_DECK_SIZE || len > MAX_DECK_SIZE {
             return Err(format!(
@@ -19,7 +19,7 @@ impl Deck {
         Ok(Deck(cards))
     }
 
-    pub fn cards(&self) -> &[Card] {
+    pub fn cards(&self) -> &[CardTemplate] {
         &self.0
     }
 }

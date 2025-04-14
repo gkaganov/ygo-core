@@ -1,11 +1,11 @@
-use crate::ygo_core::card_db::Card;
+use crate::ygo_core::card_db::CardTemplate;
 use crate::ygo_core::game::{Deck, INITIAL_HAND_SIZE};
 use crate::ygo_core::state::GamePhase::DrawPhase;
 use crate::ygo_core::state::PlayerAction::ActivateCardInHand;
 
 #[derive(Clone, Debug)]
 pub struct Player {
-    pub hand: Vec<Card>,
+    pub hand: Vec<CardTemplate>,
     pub deck: Deck,
 }
 impl Player {
@@ -105,7 +105,7 @@ impl State {
         (card.effect)(source_player_index, self.clone())
     }
 
-    fn is_activatable(card: &Card) -> bool {
+    fn is_activatable(card: &CardTemplate) -> bool {
         true
     }
 }
