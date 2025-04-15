@@ -1,3 +1,5 @@
+rustup toolchain install
+
 # Currently out of Scope
 - Ritual Monsters
 - Synchro Monsters
